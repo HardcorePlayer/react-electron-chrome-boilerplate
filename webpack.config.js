@@ -13,7 +13,8 @@ const common = {
   mode: process.env.NODE_ENV,
   devtool: !isProd ? 'inline-source-map' : 'hidden-source-map',
   output: {
-    filename: !isProd ? '[name].js' : '[name].[contenthash].js'
+    // filename: !isProd ? '[name].js' : '[name].[contenthash].js',
+    filename: '[name].js'
   },
   module: {
     rules: [{
@@ -85,6 +86,41 @@ export default function({ target }) {
         port: 9090
       }
     }]
+
+    case 'build:main': return {
+      ...common,
+      target: 'electron-main',
+      node: false,
+      entry: {
+        index: './src/main/boot'
+      },
+      plugins: [
+        ...common.plugins
+      ]
+    }
+
+    case 'build:renderer': return {
+      ...common,
+      output: {
+        ...common.output,
+        library: 'Root',
+        libraryTarget: 'umd',
+        globalObject: 'this'
+      },
+      optimization: {
+        minimize: false
+      },
+      entry: {
+        main: './src/renderer/boot'
+      },
+      plugins: [
+        ...common.plugins,
+        new HtmlWebpackPlugin({
+          template: HtmlWebpackTemplate,
+          inject: false
+        })
+      ]
+    }
 
     default: throw new Error(`Unknow target "${target}"`)
   }

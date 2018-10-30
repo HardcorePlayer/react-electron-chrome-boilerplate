@@ -23,7 +23,7 @@ function createWindow(clearContext) {
   window.loadURL(
     'production' !== process.env.NODE_ENV
       ? 'http://localhost:8080'
-      : path.resolve('./scaffold/build/index.html')
+      : path.resolve(__dirname, 'index.html')
   )
 
   window.on('closed', () => {
