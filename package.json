@@ -4,10 +4,13 @@
   "description": "React+typescript, run on both of chrome and electron environment.",
   "main": "index.js",
   "scripts": {
-    "prestart": "rm dist -rf && npx cross-env NODE_ENV=development npx webpack -r esm",
-    "prestart:electron": "cd dist && npm init -y",
-    "start:electron": "npx cross-env NODE_ENV=development npx electron ./dist",
-    "start:devserver": "cross-env NODE_ENV=development npx webpack-dev-server --hot -r esm",
+    "prestart": "rm dist -rf",
+    "preopen:electron": "npm run dev:main && cd dist && npm init -y",
+    "dev:main": "npx cross-env NODE_ENV=development npx webpack --env.target=main -r esm",
+    "watch:dev:main": "npm run dev:main -- -w",
+    "open:electron": "npx electron ./dist",
+    "start:electron": "npx run-p open:electron watch:dev:main",
+    "start:renderer": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer --hot -r esm",
     "start": "npx run-p start:*"
   },
   "repository": {
@@ -25,6 +28,8 @@
     "@types/react": "^16.4.18",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-router-dom": "^4.3.1",
+    "@types/webpack": "^4.4.17",
+    "@types/webpack-env": "^1.13.6",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "electron": "^3.0.6",

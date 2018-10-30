@@ -3,7 +3,7 @@
  */
 
 import * as path from 'path'
-import { app, BrowserWindow } from 'electron'
+import { BrowserWindow } from 'electron'
 
 
 /// code
@@ -41,27 +41,6 @@ function createWindow(clearContext) {
 }
 
 
-function main() {
-  let mainWindow
+/// export
 
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  })
-
-  app.on('activate', () => {
-    if (mainWindow === null) {
-      mainWindow = createWindow(() => mainWindow == null)
-    }
-  })
-
-  app.on('ready', () => {
-    mainWindow = createWindow(() => mainWindow == null)
-  })
-}
-
-
-/// run
-
-main()
+export default createWindow

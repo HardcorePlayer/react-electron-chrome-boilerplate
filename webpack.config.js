@@ -3,6 +3,7 @@
  */
 
 import path from 'path'
+import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import HtmlWebpackTemplate from 'html-webpack-template'
 
@@ -36,23 +37,37 @@ const common = {
   }
 }
 
-export default [{
-  ...common,
-  target: 'electron-main',
-  entry: {
-    main: './src/main'
+export default function({ target }) {
+  switch(target) {
+
+    case 'main': return {
+      ...common,
+      target: 'electron-main',
+      entry: {
+        main: ['webpack/hot/poll?1000', './src/main/boot']
+      },
+      plugins: [
+        ...common.plugins,
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin()
+      ]
+    }
+
+    case 'renderer': return {
+      ...common,
+      target: 'electron-renderer',
+      entry: {
+        renderer: './src/renderer/boot'
+      },
+      plugins: [
+        ...common.plugins,
+        new HtmlWebpackPlugin({
+          template: HtmlWebpackTemplate,
+          inject: false
+        })
+      ]
+    }
+
+    default: throw new Error(`Unknow target "${target}"`)
   }
-},{
-  ...common,
-  target: 'electron-renderer',
-  entry: {
-    renderer: './src/boot'
-  },
-  plugins: [
-    ...common.plugins,
-    new HtmlWebpackPlugin({
-      template: HtmlWebpackTemplate,
-      inject: false
-    })
-  ]
-}]
+}
