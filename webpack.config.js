@@ -11,7 +11,6 @@ const isProd = 'production' === process.env.NODE_ENV
 
 const common = {
   mode: process.env.NODE_ENV,
-  node: false,
   devtool: !isProd ? 'inline-source-map' : 'hidden-source-map',
   output: {
     filename: !isProd ? '[name].js' : '[name].[contenthash].js'
@@ -37,12 +36,27 @@ const common = {
   }
 }
 
+const commonRenderer = {
+  ...common,
+  entry: {
+    renderer: './src/renderer/boot'
+  },
+  plugins: [
+    ...common.plugins,
+    new HtmlWebpackPlugin({
+      template: HtmlWebpackTemplate,
+      inject: false
+    })
+  ]
+}
+
 export default function({ target }) {
   switch(target) {
 
     case 'main': return {
       ...common,
       target: 'electron-main',
+      node: false,
       entry: {
         main: ['webpack/hot/poll?1000', './src/main/boot']
       },
@@ -53,20 +67,24 @@ export default function({ target }) {
       ]
     }
 
-    case 'renderer': return {
-      ...common,
+    case 'renderer:electron': return [{
+      ...commonRenderer,
       target: 'electron-renderer',
-      entry: {
-        renderer: './src/renderer/boot'
-      },
-      plugins: [
-        ...common.plugins,
-        new HtmlWebpackPlugin({
-          template: HtmlWebpackTemplate,
-          inject: false
-        })
-      ]
-    }
+      node: false,
+      devServer: {
+        ...commonRenderer.devServer,
+        port: 8080
+      }
+    }]
+
+    case 'renderer:browser': return [{
+      ...commonRenderer,
+      target: 'web',
+      devServer: {
+        ...commonRenderer.devServer,
+        port: 9090
+      }
+    }]
 
     default: throw new Error(`Unknow target "${target}"`)
   }

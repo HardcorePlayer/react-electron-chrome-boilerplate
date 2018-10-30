@@ -10,8 +10,9 @@
     "watch:dev:main": "npm run dev:main -- -w",
     "open:electron": "npx electron ./dist",
     "start:electron": "npx run-p open:electron watch:dev:main",
-    "start:renderer": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer --hot -r esm",
-    "start": "npx run-p start:*"
+    "start:renderer:electron": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer:electron --hot -r esm",
+    "start:renderer:browser": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer:browser --hot --open -r esm",
+    "start": "npx run-p start:* start:renderer:*"
   },
   "repository": {
     "type": "git",
