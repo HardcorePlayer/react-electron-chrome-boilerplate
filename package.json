@@ -1,0 +1,49 @@
+{
+  "name": "react-electron-chrome-boilerplate",
+  "version": "1.0.0",
+  "description": "React+typescript, run on both of chrome and electron environment.",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "rm dist -rf && npx cross-env NODE_ENV=development npx webpack -r esm && cd dist && npm init -y && cd ..",
+    "start": "start npx cross-env NODE_ENV=development npx electron ./dist && start npx cross-env NODE_ENV=development npx webpack-dev-server --hot -r esm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avdbg/react-electron-chrome-boilerplate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avdbg/react-electron-chrome-boilerplate/issues"
+  },
+  "homepage": "https://github.com/avdbg/react-electron-chrome-boilerplate#readme",
+  "devDependencies": {
+    "@types/react": "^16.4.18",
+    "@types/react-hot-loader": "^4.1.0",
+    "@types/react-router-dom": "^4.3.1",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.1",
+    "electron": "^3.0.6",
+    "electron-builder": "^20.29.0",
+    "esm": "^3.0.84",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
+    "postcss-loader": "^3.0.0",
+    "react-hot-loader": "^4.3.11",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^5.2.2",
+    "typescript": "^3.1.4",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-router-dom": "^4.3.1"
+  }
+}
