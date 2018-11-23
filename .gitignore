@@ -68,3 +68,5 @@ flow-typed/
 
 # Dll bundles
 .dll
+
+.idea

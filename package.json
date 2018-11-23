@@ -4,7 +4,7 @@
   "description": "React+typescript, run on both of chrome and electron environment.",
   "main": "index.js",
   "scripts": {
-    "prestart": "rm dist -rf",
+    "prestart": "npx rimraf dist",
     "preopen:electron": "npm run dev:main && cd dist && npm init -y",
     "dev:main": "npx cross-env NODE_ENV=development npx webpack --env.target=main -r esm",
     "watch:dev:main": "npm run dev:main -- -w",
@@ -13,10 +13,10 @@
     "start:renderer:electron": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer:electron --hot -r esm",
     "start:renderer:browser": "cross-env NODE_ENV=development npx webpack-dev-server --env.target=renderer:browser --hot --open -r esm",
     "start": "npx run-p start:* start:renderer:*",
-    "prebuild": "rm dist -rf",
+    "prebuild": "npx rimraf dist",
     "build:main": "cross-env NODE_ENV=production npx webpack --env.target=build:main -r esm",
     "build:renderer": "cross-env NODE_ENV=production npx webpack --env.target=build:renderer -r esm",
-    "package:electron": "cd dist && cp ../package.json . && npx electron-builder build",
+    "package:electron": "cd dist && cpy ../package.json . && npx electron-builder build",
     "build": "npx run-p build:* && npm run package:electron"
   },
   "repository": {
@@ -36,6 +36,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/webpack": "^4.4.17",
     "@types/webpack-env": "^1.13.6",
+    "cpy-cli": "^2.0.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "electron": "^3.0.6",
